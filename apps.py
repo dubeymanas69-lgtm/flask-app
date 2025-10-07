@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for , flash
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 
 app = Flask(__name__)
+app.secret_key = "your_super_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///todo.db"
 db = SQLAlchemy(app)
 
@@ -14,6 +15,7 @@ class Todo(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     desc = db.Column(db.String(500), nullable=False)
+    status = db.Column(db.String(20)) 
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     def __repr__(self) -> str:
         return f"{self.sno} - {self.title}"
@@ -21,16 +23,39 @@ class Todo(db.Model):
 with app.app_context():
     db.create_all()
 
+    
 
-
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    if not Todo.query.first():
-        todo = Todo(title="first todo", desc="blah blah")
-        db.session.add(todo)
-        db.session.commit()
+    title = request.args.get("title")
+    desc = request.args.get("desc")
     alltodo = Todo.query.all()
-    return render_template("index.html" , alltodo = alltodo)
+    return render_template("index.html", alltodo=alltodo, title=title, desc=desc)
+
+@app.route("/delete/<int:Sno>")
+def delete_page(Sno):
+    todo = Todo.query.get(Sno)
+    if (todo):
+        db.session.delete(todo)
+        db.session.commit() 
+    return redirect("/data")
+
+
+@app.route("/", methods=["GET", "POST"])
+def home1():
+    title = request.args.get("title")
+    desc = request.args.get("desc")
+    alltodo = Todo.query.all()
+    return render_template("index.html", alltodo=alltodo, title=title, desc=desc)
+
+@app.route("/completed/<int:Sno>")
+def completed_page(Sno):
+    todo = Todo.query.get(Sno)
+    if (todo):
+        todo.status = "completed"
+        db.session.commit() 
+        flash("Task marked as completed!", "success")
+    return redirect("/data")
 
 @app.route("/show")
 def products():
@@ -51,7 +76,7 @@ def data_page():
         desc = request.form.get("desc")
 
         if title and desc:
-            new_todo = Todo(title=title, desc=desc)
+            new_todo = Todo(title=title, desc=desc, status = "pending")
             db.session.add(new_todo)
             db.session.commit()
             return redirect(url_for("data_page"))
@@ -59,7 +84,10 @@ def data_page():
             return "Please provide both title and description", 400
 
     alltodo = Todo.query.all()
-    return render_template("dataentries.html", alltodo=alltodo)
+    completed_page = Todo.query.filter_by(status="completed").all()
+    pending_tasks = Todo.query.filter_by(status="pending").all()
+
+    return render_template("dataentries.html", alltodo=alltodo, pending_tasks=pending_tasks, completed_page=completed_page)
 
 if __name__ == "__main__":
     app.run(debug=True)

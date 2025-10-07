@@ -1,73 +1,36 @@
-<!doctype html>
-<html lang="en" dir="ltr">
+{% extends "base.html" %}
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}Home - TODO App{% endblock %}
 
-    <!-- Bootstrap CSS (LTR version) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        integrity="sha384-..." crossorigin="anonymous">
+{% block head %}
+  <style>
+    body { background-color: #f8f9fa; }
+  </style>
+{% endblock %}
 
-    <title>manas file</title>
-</head>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+  <h1>Welcome to your TODO app</h1>
+   <form method="POST" action="/data">
 
+    <div class="mb-3">
 
-<body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">TODO</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/akriti">go to akriti page</a></li>
-                            <li><a class="dropdown-item" href="/data">to go to data entries</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-</body>
-<form action="/data" method="POST">
-<div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">TODO LIST</label>
-  <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="anything at all">
-</div>
-<div class="mb-3">
-  <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-  <textarea name="desc" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-</div>
-  <input type="submit" value="Submit">
+        <label for="exampleFormControlInput1" class="form-label">TODO LIST</label>
+
+        <input type="text" name="title" class="form-control" id="exampleFormControlInput1"
+
+            placeholder="anything at all" value="{{title or ''}}" required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+
+       <textarea name="desc" class="form-control" rows="3" required>{{ desc or '' }}</textarea>
+
+       </div>
+
+  <input type="submit" value="{% if title and desc %}Update{% else %}Submit{% endif %}" class="btn btn-primary">
+
 </form>
-
-</html>
+{% endblock %}

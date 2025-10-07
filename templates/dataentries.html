@@ -1,32 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Sno</th>
-      <th scope="col">title</th>
-      <th scope="col">jingalala</th>
-      <th scope="col">time</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for todo in alltodo %}
-       <tr>
-      <th scope="row">{{todo.sno}}</th>
-      <td>{{todo.title}}</td>
-      <td>{{todo.desc}}</td>
-      <td>{{todo.date_created}}</td>
-    </tr>
-    
-    {% endfor %}
-   
-  </tbody>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Task Entries - TODO App{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">Your Tasks</h2>
+
+  <ul class="list-group">
+    {% for todo in alltodo %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ todo.title }}</strong><br>
+          <small>{{ todo.desc }}</small>
+          {% if todo.status == "completed" %}
+            <span class="badge bg-success ms-2">Completed</span>
+          {% endif %}
+        </div>
+        <div class="btn-group">
+          <a href="/?title={{ todo.title }}&desc={{ todo.desc }}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="/completed/{{ todo.sno }}" class="btn btn-sm btn-success">Done</a>
+          <a href="/delete/{{ todo.sno }}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
