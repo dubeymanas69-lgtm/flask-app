@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Fun Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .main-image {
+            /* PLACEHOLDER: Replace 'your-image.jpg' with your actual image path */
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #linkBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        #linkBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        #journalBtn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        #journalBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .journal-section {
+            display: none;
+            margin-top: 20px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .journal-section.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        #saveBtn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            width: 100%;
+        }
+
+        #saveBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 233, 123, 0.4);
+        }
+
+        .save-message {
+            text-align: center;
+            color: #43e97b;
+            font-weight: bold;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .save-message.show {
+            opacity: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+
+        .entries-list {
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .journal-entry {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #4facfe;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .entry-timestamp {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .entry-content {
+            color: #333;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .no-entries {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Welcome! ✨</h1>
+        
+        <div class="image-container">
+            <!-- PLACEHOLDER: Replace the src attribute with your actual image path -->
+            <img src="https://via.placeholder.com/500x300/FF6B9D/FFFFFF?text=Your+Image+Here" 
+                 alt="Your awesome image" 
+                 class="main-image">
+        </div>
+
+        <div class="button-container">
+            <button id="linkBtn">🔗 Link</button>
+            <button id="journalBtn">📝 Journal</button>
+        </div>
+
+        <div id="journalSection" class="journal-section">
+            <textarea id="journalText" placeholder="Write your thoughts here... ✍️"></textarea>
+            <button id="saveBtn">💾 Save Entry</button>
+            <div id="saveMessage" class="save-message">Saved! 🎉</div>
+            <div id="entriesList" class="entries-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // PLACEHOLDER: Replace with your actual Instagram URL
+        const INSTAGRAM_URL = 'https://www.instagram.com/akriti_starvibe';
+
+        const linkBtn = document.getElementById('linkBtn');
+        const journalBtn = document.getElementById('journalBtn');
+        const journalSection = document.getElementById('journalSection');
+        const journalText = document.getElementById('journalText');
+        const saveBtn = document.getElementById('saveBtn');
+        const saveMessage = document.getElementById('saveMessage');
+        const entriesList = document.getElementById('entriesList');
+
+        function getJournalEntries() {
+            const entries = localStorage.getItem('journalEntries');
+            return entries ? JSON.parse(entries) : [];
+        }
+
+        function saveJournalEntries(entries) {
+            localStorage.setItem('journalEntries', JSON.stringify(entries));
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function displayEntries() {
+            const entries = getJournalEntries();
+            
+            if (entries.length === 0) {
+                entriesList.innerHTML = '<div class="no-entries">No journal entries yet. Start writing! ✨</div>';
+                return;
+            }
+
+            entries.sort((a, b) => b.timestamp - a.timestamp);
+            
+            entriesList.innerHTML = entries.map(entry => `
+                <div class="journal-entry">
+                    <div class="entry-timestamp">📅 ${formatDate(entry.timestamp)}</div>
+                    <div class="entry-content">${entry.content}</div>
+                </div>
+            `).join('');
+        }
+
+        linkBtn.addEventListener('click', () => {
+            window.open(INSTAGRAM_URL, '_blank');
+        });
+
+        journalBtn.addEventListener('click', () => {
+            journalSection.classList.toggle('active');
+        });
+
+        saveBtn.addEventListener('click', () => {
+            const text = journalText.value.trim();
+            
+            if (!text) {
+                return;
+            }
+
+            const entries = getJournalEntries();
+            const newEntry = {
+                timestamp: Date.now(),
+                content: text
+            };
+            
+            entries.push(newEntry);
+            saveJournalEntries(entries);
+            
+            journalText.value = '';
+            
+            displayEntries();
+            
+            saveMessage.classList.add('show');
+            setTimeout(() => {
+                saveMessage.classList.remove('show');
+            }, 2000);
+        });
+
+        window.addEventListener('load', () => {
+            displayEntries();
+        });
+    </script>
+</body>
+</html>
