@@ -25,9 +25,10 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    todo = Todo(title="first todo", desc="blah blah")
-    db.session.add(todo)
-    db.session.commit()
+    if not Todo.query.first():
+        todo = Todo(title="first todo", desc="blah blah")
+        db.session.add(todo)
+        db.session.commit()
     alltodo = Todo.query.all()
     return render_template("index.html" , alltodo = alltodo)
 
