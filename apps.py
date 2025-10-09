@@ -24,8 +24,11 @@ with app.app_context():
     db.create_all()
 
     
+@app.route('/')
+def home5():
+    return render_template('home.html')
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/todo", methods=["GET", "POST"])
 def home():
     title = request.args.get("title")
     desc = request.args.get("desc")
@@ -41,7 +44,7 @@ def delete_page(Sno):
     return redirect("/data")
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/todo", methods=["GET", "POST"])
 def home1():
     title = request.args.get("title")
     desc = request.args.get("desc")
@@ -59,9 +62,7 @@ def completed_page(Sno):
 
 @app.route("/show")
 def products():
-    alltodo = Todo.query.all()
-    print(alltodo)
-    return 'this is manas page '
+    return render_template("show.html")
 
 @app.route("/akriti")
 def akriti_page():
