@@ -64,11 +64,6 @@ def completed_page(Sno):
 def products():
     return render_template("show.html")
 
-@app.route("/akriti")
-def akriti_page():
-    return render_template("akriti.html")
-
-
 # This single route handles all /data GET and POST requests correctly.
 @app.route("/data", methods=["GET", "POST"])
 def data_page():
